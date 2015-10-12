@@ -146,7 +146,10 @@
                         //sort them as in options
                         foreach ($this->settings['tax'] as $key => $value)
                         {
-                            $taxonomies[$key] = $taxonomies_tmp[$key];
+                            if (array_key_exists($key, $taxonomies_tmp))
+                            {
+                                $taxonomies[$key] = $taxonomies_tmp[$key];
+                            }
                         }
                         //check for absent
                         foreach ($taxonomies_tmp as $key => $value)
