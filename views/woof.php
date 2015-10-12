@@ -179,7 +179,7 @@
                             $args['additional_taxes'] = $additional_taxes;
                             $args['show_count'] = get_option('woof_show_count');
                             $args['show_count_dynamic'] = get_option('woof_show_count_dynamic');
-                            $args['hide_dynamic_empty_pos'] = 0;
+                            $args['hide_dynamic_empty_pos'] = 1;
                             $args['woof_autosubmit'] = get_option('woof_autosubmit');
                             //***
                             $woof_container_styles = "";
