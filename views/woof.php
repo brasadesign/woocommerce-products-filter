@@ -271,8 +271,10 @@
 
                             <?php
                             $woof_reset_btn_txt = __('Reset', 'woocommerce-products-filter');
+                            if ( empty( $woof_link ) || ! $woof_link ) {
+                                $woof_link = get_permalink( woocommerce_get_page_id( 'shop' ) );
+                            }
                             ?>
-
                             <?php if ($woof_reset_btn_txt != 'none'): ?>
                                 <button style="float: right;" class="button woo_reset_search_form" data-link="<?php echo $woof_link ?>"><?php echo $woof_reset_btn_txt ?></button>
                             <?php endif; ?>

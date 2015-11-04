@@ -65,12 +65,8 @@ function woof_init_orderby() {
 
 function woof_init_reset_button() {
     jQuery('.woo_reset_search_form').life('click', function () {
-        //var link = jQuery(this).data('link');
-        woof_current_values = {};
-        woof_ajax_page_num = 1;
-        woof_submit_link(woof_get_submit_link().split("page/")[0]);
-        //woof_submit_link(woof_get_submit_link());
-        return false;
+        var url = jQuery(this).attr('data-link');
+        window.location = url;
     });
 }
 
