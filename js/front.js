@@ -310,9 +310,6 @@ function woof_get_submit_link() {
             if (index == swoof_search_slug) {
                 delete woof_current_values[index];
             }
-            if (index == 's') {
-                delete woof_current_values[index];
-            }
         });
     }
     //***
@@ -433,7 +430,7 @@ function woof_draw_products_top_panel() {
                     var txt = v;
                     if (index == 'orderby') {
                         txt = woof_lang_orderby + ': ' + v;
-                    } else if (index == 'woof_title') {
+                    } else if (index == 's') {
                         txt = woof_lang_title + ': ' + v;
                     } else if (index == 'insales') {
                         txt = woof_lang_insales;

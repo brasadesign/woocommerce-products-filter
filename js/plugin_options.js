@@ -24,7 +24,6 @@ jQuery(function () {
                         var option = jQuery(this).data('option');
                         var val = jQuery(this).val();
                         jQuery('input[name="woof_settings[' + option + '][' + taxonomy + ']"]').val(val);
-                        console.log(val);
                     });
                     //+++
                     jQuery(this).dialog('close');

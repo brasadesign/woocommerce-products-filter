@@ -19,14 +19,14 @@ jQuery(function () {
 
         return false;
     });
-
-    //+++
-
+    
+    //free
     jQuery('#woof_filter_btn_txt').prop('disabled', true);
     jQuery('#woof_filter_btn_txt').val('premium version');
     jQuery('#woof_reset_btn_txt').prop('disabled', true);
     jQuery('#woof_reset_btn_txt').val('premium version');
     jQuery('#woof_hide_dynamic_empty_pos').prop('disabled', true);
-    jQuery('#woof_show_title_search').prop('disabled', true);
+    jQuery('#woof_show_sku_search').prop('disabled', true);
+    jQuery('#woof_sku_conditions').prop('disabled', true);
 
 });

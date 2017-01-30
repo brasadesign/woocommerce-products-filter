@@ -138,7 +138,7 @@ if (!function_exists('woof_draw_checkbox_childs'))
             <?php
             if (!empty($term['childs']))
             {
-                woof_draw_checkbox_childs($taxonomy_info, $tax_slug, $term['childs'], $show_count, $show_count_dynamic, $hide_dynamic_empty_pos);
+                woof_draw_checkbox_childs($taxonomy_info, $tax_slug, $term['childs'], $show_count, $show_count_dynamic, true );
             }
             ?>
             <input type="hidden" value="<?php echo $term['name'] ?>" class="woof_n_<?php echo $tax_slug ?>_<?php echo $term['slug'] ?>" />

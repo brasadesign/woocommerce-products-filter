@@ -50,7 +50,7 @@
                             <a href="#" class="help_tip" data-tip="<?php _e("drag and drope", 'woocommerce-products-filter'); ?>"><img style="width: 22px; vertical-align: middle;" src="<?php echo WOOF_LINK ?>img/move.png" alt="<?php _e("move", 'woocommerce-products-filter'); ?>" /></a>&nbsp;
                             <select name="woof_settings[tax_type][<?php echo $key ?>]">
                                 <?php foreach ($this->html_types as $type => $type_text) : ?>
-                                    <option <?php if ($type == 'color') echo 'disabled'; ?> value="<?php echo $type ?>" <?php if (isset($woof_settings['tax_type'][$key])) echo selected($woof_settings['tax_type'][$key], $type) ?>><?php echo $type_text ?></option>
+                                    <option <?php if ($type == 'color'): ?>disabled=""<?php endif; ?> value="<?php echo $type ?>" <?php if (isset($woof_settings['tax_type'][$key])) echo selected($woof_settings['tax_type'][$key], $type) ?>><?php echo $type_text ?></option>
                                 <?php endforeach; ?>
                             </select><img class="help_tip" data-tip="<?php _e('View of the taxonomies terms on the front', 'woocommerce-products-filter') ?>" src="<?php echo WP_PLUGIN_URL ?>/woocommerce/assets/images/help.png" height="16" width="16" />&nbsp;
                             <?php
@@ -107,40 +107,7 @@
 
                             <input <?php echo(@in_array($key, @array_keys($this->settings['tax'])) ? 'checked="checked"' : '') ?> type="checkbox" name="woof_settings[tax][<?php echo $key ?>]" value="1" />&nbsp;
                             <?php echo $tax->labels->name ?>&nbsp;
-                            <?php
-                            if ($woof_settings['tax_type'][$key] == 'color')
-                            {
-                                $terms = WOOF_HELPER::get_terms($key, 0, 0, 0, 0);
-                                if (!empty($terms))
-                                {
-                                    echo '<ul class="woof_color_list">';
-                                    foreach ($terms as $t)
-                                    {
-                                        $color = '#000000';
-                                        if (isset($woof_settings['color'][$key][$t['slug']]))
-                                        {
-                                            $color = $woof_settings['color'][$key][$t['slug']];
-                                        }
-                                        ?>
-                                    <li>
-                                        <table>
-                                            <tr>
-                                                <td valign="top">
-                                                    <input type="text" name="woof_settings[color][<?php echo $key ?>][<?php echo $t['slug'] ?>]" value="<?php echo $color ?>" id="woof_color_picker_<?php echo $t['slug'] ?>" class="woof-color-picker" >
-                                                </td>
-                                                <td valign="top" style="padding: 4px 0 0 0;">
-                                                    <i> -> <?php echo strtolower($t['name']) ?></i>
-                                                </td>
-                                            </tr>
-                                        </table>
 
-                                    </li>
-                                    <?php
-                                }
-                                echo '</ul>';
-                            }
-                        }
-                        ?>
 
                         </li>
                     <?php endforeach; ?>
@@ -150,7 +117,6 @@
             <div id="tabs-2">
 
                 <?php woocommerce_admin_fields($this->get_options()); ?>
-
 
             </div>
 
@@ -238,10 +204,10 @@
                 }
                 $skin = $woof_settings['overlay_skin'];
                 ?>
-                <h4 style="margin-bottom: 5px; color: red;"><?php _e('Overlay skins', 'woocommerce-products-filter') ?></h4>
+                <h4 style="margin-bottom: 5px;"><?php _e('Overlay skins', 'woocommerce-products-filter') ?></h4>
                 <select name="woof_settings[overlay_skin]" class="chosen_select" style="width: 300px;">
                     <?php foreach ($skins as $scheme => $title) : ?>
-                        <option <?php if ($scheme != 'default'): ?>disabled=""<?php endif; ?> value="<?php echo $scheme; ?>" <?php if ($skin == $scheme): ?>selected="selected"<?php endif; ?>><?php echo $title; ?></option>
+                        <option value="<?php echo $scheme; ?>" <?php if ($skin == $scheme): ?>selected="selected"<?php endif; ?>><?php echo $title; ?></option>
                     <?php endforeach; ?>
                 </select>&nbsp;<br />
                 <?php
@@ -285,13 +251,14 @@
                     }
                     $default_overlay_skin_word = $woof_settings['default_overlay_skin_word'];
                     ?>
-                    <h4 style="margin-bottom: 5px; color: red;"><?php _e('Loading word', 'woocommerce-products-filter') ?></h4>
-                    <input style="width: 80%;" disabled="" type="text" name="woof_settings[default_overlay_skin_word]" value="<?php echo $default_overlay_skin_word ?>" /><br />
-                    <i><?php _e('Word while searching is going on front when "Overlay skins" is default. Premium only', 'woocommerce-products-filter') ?></i><br />
+                    <h4 style="margin-bottom: 5px;"><?php _e('Loading word', 'woocommerce-products-filter') ?></h4>
+                    <input style="width: 80%;" type="text" name="woof_settings[default_overlay_skin_word]" value="<?php echo $default_overlay_skin_word ?>" /><br />
+                    <i><?php _e('Word while searching is going on front when "Overlay skins" is default.', 'woocommerce-products-filter') ?></i><br />
                     <br />
                 </div>
 
 
+                <hr />
 
 
                 <?php if (get_option('woof_set_automatically')): ?>
@@ -343,12 +310,12 @@
 
 
                 <h4 style="margin-bottom: 5px; color: red;"><?php _e('Image for subcategories - open', 'woocommerce-products-filter') ?></h4>
-                <input style="width: 80%;" disabled="" type="text" name="woof_settings[woof_auto_subcats_plus_img]" value="<?php echo @$woof_settings['woof_auto_subcats_plus_img'] ?>" /><br />
-                <i><?php _e('Image when you select in tab Options "Hide childs in checkboxes and radio". By default it is green cross. Premium only.', 'woocommerce-products-filter') ?></i><br />
+                <input style="width: 80%;" placeholder="Premium only" disabled="" type="text" name="woof_settings[woof_auto_subcats_plus_img]" value="" /><br />
+                <i><?php _e('Image when you select in tab Options "Hide childs in checkboxes and radio". By default it is green cross.', 'woocommerce-products-filter') ?></i><br />
                 <br />
                 <h4 style="margin-bottom: 5px; color: red;"><?php _e('Image for subcategories - close', 'woocommerce-products-filter') ?></h4>
-                <input style="width: 80%;" disabled="" type="text" name="woof_settings[woof_auto_subcats_minus_img]" value="<?php echo @$woof_settings['woof_auto_subcats_minus_img'] ?>" /><br />
-                <i><?php _e('Image when you select in tab Options "Hide childs in checkboxes and radio". By default it is green minus. Premium only.', 'woocommerce-products-filter') ?></i><br />
+                <input style="width: 80%;" placeholder="Premium only" disabled="" type="text" name="woof_settings[woof_auto_subcats_minus_img]" value="" /><br />
+                <i><?php _e('Image when you select in tab Options "Hide childs in checkboxes and radio". By default it is green minus.', 'woocommerce-products-filter') ?></i><br />
                 <br />
 
 
@@ -359,11 +326,34 @@
                 }
                 ?>
 
-                <h4 style="margin-bottom: 5px; color: red;"><?php _e('Image for checked color type checkbox', 'woocommerce-products-filter') ?></h4>
-                <input style="width: 80%;" disabled="" type="text" name="woof_settings[checked_color_img]" value="<?php echo $woof_settings['checked_color_img'] ?>" /><br />
-                <i><?php _e('Image for color checkboxes when its checked. Better use png. Size is: 20x20 px. Premium only', 'woocommerce-products-filter') ?></i><br />
+                <h4 style="margin-bottom: 5px; color:red;"><?php _e('Image for checked color type checkbox', 'woocommerce-products-filter') ?></h4>
+                <input style="width: 80%;" placeholder="Premium only" disabled="" type="text" name="woof_settings[checked_color_img]" value="" /><br />
+                <i><?php _e('Image for color checkboxes when its checked. Better use png. Size is: 20x20 px.', 'woocommerce-products-filter') ?></i><br />
                 <i><?php _e('Example', 'woocommerce-products-filter') ?>: <?php echo WOOF_LINK ?>img/checked8.png</i><br />
                 <br />
+
+
+                <hr />
+
+
+
+                <?php
+                if (!isset($woof_settings['title_submit_image']))
+                {
+                    $woof_settings['title_submit_image'] = '';
+                }
+                ?>
+
+                <h4 style="margin-bottom: 5px;"><?php _e('Image for title search input button', 'woocommerce-products-filter') ?></h4>
+                <input style="width: 80%;" type="text" name="woof_settings[title_submit_image]" value="<?php echo $woof_settings['title_submit_image'] ?>" /><br />
+                <i><?php _e('Image for title search button which appears near input when users typing there any symbols. Better use png. Size is: 20x20 px.', 'woocommerce-products-filter') ?></i><br />
+                <i><?php _e('Example', 'woocommerce-products-filter') ?>: <?php echo WOOF_LINK ?>img/eye-icon1.png</i><br />
+                <br />
+
+
+
+
+                <hr />
 
 
 
@@ -375,17 +365,72 @@
                 }
                 ?>
 
-                <h4 style="margin-bottom: 5px; color: red;"><?php _e('Price filter title text', 'woocommerce-products-filter') ?></h4>
-                <input style="width: 80%;" disabled="" type="text" name="woof_settings[price_filter_title_txt]" value="<?php echo $woof_settings['price_filter_title_txt'] ?>" /><br />
-                <i><?php _e('Text before the price filter range slider. Leave it empty if you not need it! Premium only.', 'woocommerce-products-filter') ?></i><br />
+                <h4 style="margin-bottom: 5px;"><?php _e('Price filter title text', 'woocommerce-products-filter') ?></h4>
+                <input style="width: 80%;" type="text" name="woof_settings[price_filter_title_txt]" value="<?php echo $woof_settings['price_filter_title_txt'] ?>" /><br />
+                <i><?php _e('Text before the price filter range slider. Leave it empty if you not need it!', 'woocommerce-products-filter') ?></i><br />
+                <br />
+
+
+                <?php
+                if (!isset($woof_settings['price_filter2_ranges']))
+                {
+                    $woof_settings['price_filter2_ranges'] = '';
+                }
+                ?>
+
+                <h4 style="margin-bottom: 5px; color: red;"><?php _e('Drop-down price filter ranges', 'woocommerce-products-filter') ?></h4>
+                <input style="width: 80%;" placeholder="Premium only" type="text" name="woof_settings[price_filter2_ranges]" disabled="" value="" /><br />
+                <i><?php printf(__('Ranges for price filter when its activated as drop down. Example: 0-50,51-100,101-i. Where "i" is infinity. Max price is %s.', 'woocommerce-products-filter'), WOOF_HELPER::get_max_price()) ?></i><br />
+                <br />
+
+
+                <?php
+                if (!isset($woof_settings['price_filter2_1opt_txt']))
+                {
+                    $woof_settings['price_filter2_1opt_txt'] = '';
+                }
+                ?>
+
+                <h4 style="margin-bottom: 5px; color: red;"><?php _e('Drop-down price filter text', 'woocommerce-products-filter') ?></h4>
+                <input style="width: 80%;" placeholder="Premium only" disabled="" type="text" name="woof_settings[price_filter2_1opt_txt]" value="" /><br />
+                <i><?php _e('Drop-down price filter first option text', 'woocommerce-products-filter') ?></i><br />
+                <br />
+
+
+                <hr />
+
+
+                <?php
+                if (!isset($woof_settings['search_by_sku_placeholder_txt']))
+                {
+                    $woof_settings['search_by_sku_placeholder_txt'] = '';
+                }
+                ?>
+
+                <h4 style="margin-bottom: 5px; color: red;"><?php _e('SKU textinput placeholder', 'woocommerce-products-filter') ?></h4>
+                <input style="width: 80%;" placeholder="Premium only" disabled="" type="text" name="woof_settings[search_by_sku_placeholder_txt]" value="" /><br />
+                <i><?php _e('SKU textinput placeholder. Set "none" if you want leave it empty on the front.', 'woocommerce-products-filter') ?></i><br />
+                <br />
+
+
+                <?php
+                if (!isset($woof_settings['sku_submit_image']))
+                {
+                    $woof_settings['sku_submit_image'] = '';
+                }
+                ?>
+
+                <h4 style="margin-bottom: 5px; color: red;"><?php _e('Image for sku input button', 'woocommerce-products-filter') ?></h4>
+                <input style="width: 80%;" placeholder="Premium only" disabled="" type="text" name="woof_settings[sku_submit_image]" value="" /><br />
+                <i><?php _e('Image for sku search button which appears near input when users typing there any symbols. Better use png. Size is: 20x20 px.', 'woocommerce-products-filter') ?></i><br />
+                <i><?php _e('Example', 'woocommerce-products-filter') ?>: <?php echo WOOF_LINK ?>img/eye-icon1.png</i><br />
                 <br />
 
 
 
 
-
-
                 <?php if (class_exists('SitePress')): ?>
+                    <hr />
                     <br />
                     <?php
                     $wpml_tax_labels = "";
@@ -423,7 +468,7 @@
             <div id="tabs-5">
                 <table class="form-table">
                     <tr valign="top">
-                        <th scope="row"><label for="title_search"><?php _e("Search by title behaviour. Premium only.", 'woocommerce-products-filter') ?></label></th>
+                        <th scope="row"><label for="title_search"><?php _e("Search by title behaviour", 'woocommerce-products-filter') ?></label></th>
                         <td>
                             <fieldset>
 
@@ -443,9 +488,9 @@
                                     $woof_settings['search_by_title_behaviour'] = 'title';
                                 }
                                 ?>
-                                <select name="woof_settings[search_by_title_behaviour]" disabled="">
+                                <select name="woof_settings[search_by_title_behaviour]">
                                     <?php foreach ($behaviour as $key => $value) : ?>
-                                        <option value="<?php echo $key; ?>" <?php if ($woof_settings['search_by_title_behaviour'] == $key): ?>selected="selected"<?php endif; ?>><?php echo $value; ?></option>
+                                        <option <?php if ($key != 'title'): ?>disabled=""<?php endif; ?> value="<?php echo $key; ?>" <?php if ($woof_settings['search_by_title_behaviour'] == $key): ?>selected="selected"<?php endif; ?>><?php echo $value; ?></option>
                                     <?php endforeach; ?>
                                 </select><br />
                                 <br />
@@ -458,8 +503,8 @@
                                 }
                                 ?>
 
-                                <h4 style="margin-bottom: 5px; color: red;"><?php _e('Placeholder text for the title textinput', 'woocommerce-products-filter') ?></h4>
-                                <input style="width: 80%;" disabled="" type="text" placeholder="<?php _e('enter the product title here ...', 'woocommerce-products-filter') ?>" name="woof_settings[search_by_title_placeholder_txt]" value="<?php echo $woof_settings['search_by_title_placeholder_txt'] ?>" /><br />
+                                <h4 style="margin-bottom: 5px;"><?php _e('Placeholder text for the title textinput', 'woocommerce-products-filter') ?></h4>
+                                <input style="width: 80%;" type="text" placeholder="<?php _e('enter the product title here ...', 'woocommerce-products-filter') ?>" name="woof_settings[search_by_title_placeholder_txt]" value="<?php echo $woof_settings['search_by_title_placeholder_txt'] ?>" /><br />
                                 <i><?php _e('Set "none" to disable placeholder for this textinput', 'woocommerce-products-filter') ?></i><br />
 
 
@@ -469,7 +514,7 @@
                     </tr>
 
                     <tr>
-                        <th scope="row"><label for="swoof_search_slug"><?php _e('Search slug. Premium only.', 'woocommerce-products-filter') ?></label></th>
+                        <th scope="row"><label for="swoof_search_slug"><?php _e('Search slug', 'woocommerce-products-filter') ?></label></th>
 
                         <td>
                             <fieldset>
@@ -481,7 +526,7 @@
                                     }
                                     ?>
 
-                                    <input style="width: 80%;" disabled="" placeholder="swoof" type="text" name="woof_settings[swoof_search_slug]" value="<?php echo $woof_settings['swoof_search_slug'] ?>" id="swoof_search_slug" /><br />
+                                    <input style="width: 80%;" placeholder="Premium only" disabled="" placeholder="swoof" type="text" name="woof_settings[swoof_search_slug]" value="" id="swoof_search_slug" /><br />
                                     <i><?php _e('If you do not like search key "swoof" in the search link you can replace it by your own word. But be care to avoid conflicts with any themes and plugins, + never define it as symbol "s".<br /> Not understood? Simply do not touch it!', 'woocommerce-products-filter') ?></i><br />
                                 </label>
                             </fieldset>
@@ -504,6 +549,67 @@
 
                                 <input style="width: 80%;" type="text" name="woof_settings[per_page]" value="<?php echo $woof_settings['per_page'] ?>" id="per_page" /><br />
                                 <i><?php _e('Products per page by default', 'woocommerce-products-filter') ?></i><br />
+                            </fieldset>
+
+                        </td>
+                    </tr>
+
+                    <tr valign="top">
+                        <th scope="row"><label for="storage_type"><?php _e("Storage type", 'woocommerce-products-filter') ?></label></th>
+                        <td>
+                            <fieldset>
+
+
+                                <?php
+                                $storage_types = array(
+                                    'session' => 'session',
+                                    'transient' => 'transient'
+                                );
+                                ?>
+
+                                <?php
+                                if (!isset($woof_settings['storage_type']) OR empty($woof_settings['storage_type']))
+                                {
+                                    $woof_settings['storage_type'] = 'session';
+                                }
+                                ?>
+                                <select name="woof_settings[storage_type]">
+                                    <?php foreach ($storage_types as $key => $value) : ?>
+                                        <option value="<?php echo $key; ?>" <?php if ($woof_settings['storage_type'] == $key): ?>selected="selected"<?php endif; ?>><?php echo $value; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+
+                                <p class="description"><?php _e("If you have troubles with relevant terms recount on categories pages with dynamic recount for not logged in users - select transient.", 'woocommerce-products-filter') ?></p>
+
+                            </fieldset>
+
+                        </td>
+                    </tr>
+
+
+                    <tr valign="top">
+                        <th scope="row"><label for="hide_terms_count_txt"><?php _e("Hide terms count text", 'woocommerce-products-filter') ?></label></th>
+                        <td>
+                            <fieldset>
+
+
+                                <?php
+                                $hide_terms_count_txt = array(
+                                    0 => __("No - Premium only", 'woocommerce-products-filter'),
+                                );
+                                ?>
+
+                                <?php
+                                $woof_settings['hide_terms_count_txt'] = 0;
+                                ?>
+                                <select name="woof_settings[hide_terms_count_txt]">
+                                    <?php foreach ($hide_terms_count_txt as $key => $value) : ?>
+                                        <option value="<?php echo $key; ?>" <?php if ($woof_settings['hide_terms_count_txt'] == $key): ?>selected="selected"<?php endif; ?>><?php echo $value; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+
+                                <p class="description"><?php _e("If you want show relevant tags and tags count on the categories pages you should activate show count, dynamic recount and <b>hide empty terms</b> in the tab Options. But if you do not want show count text near each term - set Yes here.", 'woocommerce-products-filter') ?></p>
+
                             </fieldset>
 
                         </td>
@@ -550,6 +656,12 @@
                                         'hourly' => __("clean cache automatically hourly", 'woocommerce-products-filter'),
                                         'twicedaily' => __("clean cache automatically twicedaily", 'woocommerce-products-filter'),
                                         'daily' => __("clean cache automatically daily", 'woocommerce-products-filter'),
+                                        'days2' => __("clean cache automatically each 2 days", 'woocommerce-products-filter'),
+                                        'days3' => __("clean cache automatically each 3 days", 'woocommerce-products-filter'),
+                                        'days4' => __("clean cache automatically each 4 days", 'woocommerce-products-filter'),
+                                        'days5' => __("clean cache automatically each 5 days", 'woocommerce-products-filter'),
+                                        'days6' => __("clean cache automatically each 6 days", 'woocommerce-products-filter'),
+                                        'days7' => __("clean cache automatically each 7 days", 'woocommerce-products-filter')
                                     );
                                     ?>
                                     <select name="woof_settings[cache_count_data_auto_clean]">
@@ -611,7 +723,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><label for="js_code_after_ajax"><?php _e('JavaScript code after AJAX is done', 'woocommerce-products-filter') ?></label></th>
+                        <th scope="row"><label for="js_after_ajax_done"><?php _e('JavaScript code after AJAX is done', 'woocommerce-products-filter') ?></label></th>
                         <td>
                             <textarea class="wide" id="js_after_ajax_done" style="height: 300px; width: 100%;" name="woof_settings[js_after_ajax_done]"><?php echo stripcslashes(@$this->settings['js_after_ajax_done']) ?></textarea><br />
                             <i><?php _e('Use it when you are need additional action after AJAX redraw your products in shop page or in page with shortcode!', 'woocommerce-products-filter') ?></i>
@@ -741,15 +853,38 @@
             //code syntax highlight here
         </script>
 
+
+
+
+
+
     </div>
 
+    <br />
+
+    <hr />
+
+
+    <table style="width: 100%;">
+        <tr>
+            <td style="width: 50%;">
+                <h3><?php _e("Get the full version of the plugin from Codecanyon", 'woocommerce-products-filter-free') ?>:</h3>
+                <a href="http://codecanyon.net/item/woof-woocommerce-products-filter/11498469?ref=realmag777" target="_blank"><img src="<?php echo WOOF_LINK ?>img/woof_banner.png" alt="<?php _e("full version of the plugin", 'woocommerce-currency-switcher'); ?>" /></a>
+            </td>
+            <td style="width: 50%;">
+                <h3><?php _e("Get WooCommerce Currency Swither for free", 'woocommerce-currency-switcher') ?>:</h3>
+                <a href="https://wordpress.org/plugins/woocommerce-currency-switcher/" target="_blank"><img src="<?php echo WOOF_LINK ?>img/woocs_banner.jpg" alt="<?php _e("WOOCS", 'woocommerce-currency-switcher'); ?>" /></a>
+            </td>
+        </tr>
+    </table>
+
     <div id="woof-modal-content" style="display: none;">
-        <h4 style="margin: 0.5em 0 !important;"><?php _e('Taxonomy custom label', 'woocommerce-products-filter') ?>&nbsp;<img class="help_tip" data-tip="<?php _e('For example you want to show title of Product Categories as "My Products". Just for your conveniencing. Premium only.', 'woocommerce-products-filter') ?>" src="<?php echo WP_PLUGIN_URL ?>/woocommerce/assets/images/help.png" height="16" width="16" /></h4>
-        <input type="text" disabled="" class="woof_popup_option" data-option="custom_tax_label" placeholder="<?php _e('leave it empty to use native taxonomy name', 'woocommerce-products-filter') ?>" value="0" />px&nbsp;
+        <h4 style="margin: 0.5em 0 !important;"><?php _e('Taxonomy custom label', 'woocommerce-products-filter') ?>&nbsp;<img class="help_tip" data-tip="<?php _e('For example you want to show title of Product Categories as "My Products". Just for your conveniencing.', 'woocommerce-products-filter') ?>" src="<?php echo WP_PLUGIN_URL ?>/woocommerce/assets/images/help.png" height="16" width="16" /></h4>
+        <input type="text" class="woof_popup_option" data-option="custom_tax_label" placeholder="<?php _e('leave it empty to use native taxonomy name', 'woocommerce-products-filter') ?>" value="0" />px&nbsp;
         <br />
 
-        <h4 style="margin: 0.5em 0 !important;"><?php _e('Max height of the block', 'woocommerce-products-filter') ?>&nbsp;<img class="help_tip" data-tip="<?php _e('Max-height (px). Works if the taxonomy view is radio or checkbox. 0 means no max-height. Premium only.', 'woocommerce-products-filter') ?>" src="<?php echo WP_PLUGIN_URL ?>/woocommerce/assets/images/help.png" height="16" width="16" /></h4>
-        <input type="text" class="woof_popup_option" disabled="" data-option="tax_block_height" placeholder="<?php _e('Max height of  the block', 'woocommerce-products-filter') ?>" value="0" />px&nbsp;
+        <h4 style="margin: 0.5em 0 !important;"><?php _e('Max height of the block', 'woocommerce-products-filter') ?>&nbsp;<img class="help_tip" data-tip="<?php _e('Max-height (px). Works if the taxonomy view is radio or checkbox. 0 means no max-height.', 'woocommerce-products-filter') ?>" src="<?php echo WP_PLUGIN_URL ?>/woocommerce/assets/images/help.png" height="16" width="16" /></h4>
+        <input type="text" class="woof_popup_option" data-option="tax_block_height" placeholder="<?php _e('Max height of  the block', 'woocommerce-products-filter') ?>" value="0" />px&nbsp;
         <br />
 
         <h4 style="margin: 0.5em 0 !important;"><?php _e('Show title label', 'woocommerce-products-filter') ?> &nbsp;<img class="help_tip" data-tip="<?php _e('Show/Hide taxonomy block title on the front', 'woocommerce-products-filter') ?>" src="<?php echo WP_PLUGIN_URL ?>/woocommerce/assets/images/help.png" height="16" width="16" /></h4>
@@ -770,6 +905,3 @@
 
 </div>
 
-<br />
-<a href="http://codecanyon.net/item/woocommerce-products-filter-light/11498469?ref=realmag777" target="_blank"><img src="<?php echo WOOF_LINK ?>/img/woof_banner.jpg" alt="" /></a>
-&nbsp;<a href="http://codecanyon.net/item/woocommerce-currency-switcher/8085217?ref=realmag777" target="_blank"><img src="<?php echo WOOF_LINK ?>/img/woocs_banner.jpg" alt="" /></a>

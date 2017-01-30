@@ -2,7 +2,8 @@
 <?php
 $collector = array();
 $_REQUEST['additional_taxes'] = $additional_taxes;
-$woof_hide_dynamic_empty_pos = 0;
+$_REQUEST['hide_terms_count_txt'] = isset($this->settings['hide_terms_count_txt']) ? $this->settings['hide_terms_count_txt'] : 0;
+$woof_hide_dynamic_empty_pos = false;
 
 if (!function_exists('woof_draw_select_childs'))
 {
@@ -10,37 +11,48 @@ if (!function_exists('woof_draw_select_childs'))
     function woof_draw_select_childs(&$collector, $taxonomy_info, $tax_slug, $childs, $level, $show_count, $show_count_dynamic, $hide_dynamic_empty_pos)
     {
         global $WOOF;
-        $woof_hide_dynamic_empty_pos = 0;
+        $request = $WOOF->get_request_data();
+        $woof_hide_dynamic_empty_pos = false;
         //***        
         $current_request = array();
-        if (isset($_GET[$tax_slug]))
+        if ($WOOF->is_isset_in_request_data($tax_slug))
         {
-            $current_request = $_GET[$tax_slug];
+            $current_request = $request[$tax_slug];
             $current_request = explode(',', urldecode($current_request));
         }
+        
+        $childs = apply_filters('woof_sort_terms_before_out', $childs, 'select');
         ?>
         <?php foreach ($childs as $term) : ?>
             <?php
             $count_string = "";
             $count = 0;
-            if ($show_count)
+            if (!in_array($term['slug'], $current_request))
             {
-                if ($show_count_dynamic)
+                if ($show_count)
                 {
-                    $count = $WOOF->dynamic_count($term, 'select', $_REQUEST['additional_taxes']);
-                } else
-                {
-                    $count = $term['count'];
+                    if ($show_count_dynamic)
+                    {
+                        $count = $WOOF->dynamic_count($term, 'select', $_REQUEST['additional_taxes']);
+                    } else
+                    {
+                        $count = $term['count'];
+                    }
+                    $count_string = '(' . $count . ')';
                 }
-                $count_string = '(' . $count . ')';
+                //+++
+                if ($hide_dynamic_empty_pos AND $count == 0)
+                {
+                    continue;
+                }
             }
-            //+++
-            if ($hide_dynamic_empty_pos AND $count == 0)
+
+            if ($_REQUEST['hide_terms_count_txt'])
             {
-                continue;
+                $count_string = "";
             }
             ?>
-            <option <?php if ($show_count AND $count == 0 AND !in_array($term['slug'], $current_request)): ?>disabled=""<?php endif; ?> value="<?php echo $term['slug'] ?>" <?php echo selected(in_array($term['slug'], $current_request)) ?>><?php echo str_repeat('&nbsp;&nbsp;&nbsp;', $level) ?><?php
+            <option <?php if ($show_count AND $count == 0 AND ! in_array($term['slug'], $current_request)): ?>disabled=""<?php endif; ?> value="<?php echo $term['slug'] ?>" <?php echo selected(in_array($term['slug'], $current_request)) ?>><?php echo str_repeat('&nbsp;&nbsp;&nbsp;', $level) ?><?php
                 if (has_filter('woof_before_term_name'))
                     echo apply_filters('woof_before_term_name', $term, $taxonomy_info);
                 else
@@ -67,14 +79,15 @@ if (!function_exists('woof_draw_select_childs'))
 
 }
 ?>
-<select class="woof_select" name="<?php echo $tax_slug ?>">
+<select class="woof_select woof_select_<?php echo $tax_slug ?>" name="<?php echo $tax_slug ?>">
     <option value="0"><?php echo WOOF_HELPER::wpml_translate($taxonomy_info) ?></option>
     <?php
     $woof_tax_values = array();
     $current_request = array();
-    if (isset($_GET[$tax_slug]))
+    $request = $this->get_request_data();
+    if ($this->is_isset_in_request_data($tax_slug))
     {
-        $current_request = $_GET[$tax_slug];
+        $current_request = $request[$tax_slug];
         $current_request = explode(',', urldecode($current_request));
     }
     //excluding hidden terms
@@ -83,26 +96,37 @@ if (!function_exists('woof_draw_select_childs'))
     {
         $hidden_terms = explode(',', $this->settings['excluded_terms'][$tax_slug]);
     }
+
+    $terms = apply_filters('woof_sort_terms_before_out', $terms, 'select');
+    $shown_options_tags = 0;
     ?>
     <?php foreach ($terms as $term) : ?>
         <?php
         $count_string = "";
-        $count = 0;
-        if ($show_count)
+        $count = 0;        
+        if (!in_array($term['slug'], $current_request))
         {
-            if ($show_count_dynamic)
+            if ($show_count)
             {
-                $count = $this->dynamic_count($term, 'select', $_REQUEST['additional_taxes']);
-            } else
-            {
-                $count = $term['count'];
+                if ($show_count_dynamic)
+                {
+                    $count = $this->dynamic_count($term, 'select', $_REQUEST['additional_taxes']);
+                } else
+                {
+                    $count = $term['count'];
+                }
+                $count_string = '(' . $count . ')';
             }
-            $count_string = '(' . $count . ')';
+            //+++
+            if ($hide_dynamic_empty_pos AND $count == 0)
+            {
+                continue;
+            }
         }
-        //+++
-        if ($hide_dynamic_empty_pos AND $count == 0)
+
+        if ($_REQUEST['hide_terms_count_txt'])
         {
-            continue;
+            $count_string = "";
         }
 
         //excluding hidden terms
@@ -111,13 +135,14 @@ if (!function_exists('woof_draw_select_childs'))
             continue;
         }
         ?>
-        <option <?php if ($show_count AND $count == 0 AND !in_array($term['slug'], $current_request)): ?>disabled=""<?php endif; ?> value="<?php echo $term['slug'] ?>" <?php echo selected(in_array($term['slug'], $current_request)) ?>><?php
+        <option <?php if ($show_count AND $count == 0 AND ! in_array($term['slug'], $current_request)): ?>disabled=""<?php endif; ?> value="<?php echo $term['slug'] ?>" <?php echo selected(in_array($term['slug'], $current_request)) ?>><?php
             if (has_filter('woof_before_term_name'))
                 echo apply_filters('woof_before_term_name', $term, $taxonomy_info);
             else
                 echo $term['name'];
             ?> <?php echo $count_string ?></option>
         <?php
+        
         if (!isset($collector[$tax_slug]))
         {
             $collector[$tax_slug] = array();
@@ -131,11 +156,17 @@ if (!function_exists('woof_draw_select_childs'))
         {
             woof_draw_select_childs($collector, $taxonomy_info, $tax_slug, $term['childs'], 1, $show_count, $show_count_dynamic, $hide_dynamic_empty_pos);
         }
+        $shown_options_tags++;
         ?>
     <?php endforeach; ?>
 </select>
-
-
+<?php if ($shown_options_tags == 0): ?>
+    <style type="text/css">
+        .woof_container_<?php echo $tax_slug ?>{
+            display:none;
+        }
+    </style>
+<?php endif; ?>            
 
 <?php
 //this is for woof_products_top_panel

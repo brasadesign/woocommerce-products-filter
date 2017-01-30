@@ -1,10 +1,10 @@
 === WooCommerce Products Filter ===
 Contributors: RealMag777
 Donate link: http://codecanyon.net/item/woof-woocommerce-products-filter/11498469?ref=realmag777
-Tags: woocommerce products filter, products filter, filter, shortcode, woocommerce, products
+Tags: woocommerce products filter, products filter, ajax products filter, filter, shortcode, widget, woocommerce, products, ajax
 Requires at least: 4.1.0
-Tested up to: 4.2.2
-Stable tag: 1.1.1
+Tested up to: 4.3.0
+Stable tag: 1.1.2
 
 WooCommerce Products Filter – Quick&Easy products filter
 
@@ -16,12 +16,12 @@ Supports latest version of the WooCommerce plugin.
 ### The Plugin Features:
 
 * Shortcode&Widget -> [woof]
-* Products shortcode [woof_products per_page=8 columns=3 is_ajax=1]
+* Products shortcode [woof_products per_page=8 columns=3 is_ajax=1 taxonomies=product_cat:9]
 * Uses native woocommerce API only
-* AJAX searching mode
+* Products searching by AJAX
+* Dynamic products recount
 * You can show your taxonomies as: radio, checkbox, drop-down, multi-drop-down and color in the premium version
 * Different skins for radio and checkboxes in the plugin settings
-* Dynamic products recount
 * Simple options
 * Compatible with WooCommerce Currency Switcher - https://wordpress.org/plugins/woocommerce-currency-switcher/
 * WPML compatibility
@@ -57,11 +57,29 @@ R: http://www.woocommerce-filter.com/category/faq/
 
 == Screenshots ==
 1. The plugin settings tab 1
-2. The plugin settings tab 2
-3. The plugin settings tab 3
-4. The plugin settings tab 4
+2. The plugin settings tab 2-1
+3. The plugin settings tab 2-2
+4. The plugin settings tab 3
+5. The plugin settings tab 4
 
 == Changelog ==
+
+= 1.1.2 =
+* Fixed minor issues from customers
+* Added: Search by SKU - premium only
+* Added: Filter by price as drop-down - premium only
+* Added shortcode: [woof_title_filter placeholder="custom placeholder text"]
+* the color description selectable so that it can be highlighted and pasted into colour selector by the term description textarea
+* Added condition attribute 'taxonomies': [woof taxonomies=product_cat:9 sid="auto_shortcode"][woof_products is_ajax=1 per_page=8 taxonomies=product_cat:9]
+* Added: the "eyeball" search icon image - can be changed in the plugin settings -> tab Miscellaneous
+* Added: dynamic recount cron cache periods of cleaning
+* Added: option - Hide woof top panel buttons
+* Added: option - storage type: session or transient
+* PHP code optimization
+* Added some features to API: http://www.woocommerce-filter.com/documentation/#!/section_6
+
+= 1.1.1.1 =
+* Hot fix update for compatibility with WordPress 4.3
 
 = 1.1.1 =
 * Some little bugs fixed + 1 strict notice

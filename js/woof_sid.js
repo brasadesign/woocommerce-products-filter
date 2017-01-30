@@ -92,7 +92,5 @@ jQuery(function () {
  */
 function woof_change_cont_width(select) {
     var width = parseFloat(jQuery(select).val()) * 100;
-    console.log(width);
-    console.log(woof_current_conatiner_class);
     jQuery('.' + woof_current_conatiner_class).css('width', width + '%');
 }

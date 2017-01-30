@@ -7,7 +7,7 @@ function woof_init_selects() {
     if (is_woof_use_chosen) {
         try {
             // jQuery("select.woof_select").chosen('destroy').trigger("liszt:updated");
-            jQuery("select.woof_select").chosen({disable_search_threshold: 10});
+            jQuery("select.woof_select, select.woof_price_filter_dropdown").chosen({disable_search_threshold: 10});
         } catch (e) {
 
         }

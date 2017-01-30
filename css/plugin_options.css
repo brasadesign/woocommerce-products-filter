@@ -4,11 +4,10 @@
 
 
 
-label[for=woof_show_title_search],label[for=woof_filter_btn_txt],
+label[for=woof_show_sku_search],label[for=woof_sku_conditions],label[for=woof_filter_btn_txt],
 label[for=woof_reset_btn_txt],label[for=title_search],label[for=swoof_search_slug],
-label[for=woof_hide_dynamic_empty_pos]
+label[for=woof_hide_dynamic_empty_pos],label[for=hide_terms_count_txt]
 {
     color:red;
 }
-
 

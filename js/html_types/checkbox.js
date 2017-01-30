@@ -1,12 +1,8 @@
-jQuery(function () {
-    //woof_init_checkboxes();
-});
-
 function woof_init_checkboxes() {
     if (icheck_skin != 'none') {
         jQuery('.woof_checkbox_term').iCheck('destroy');
 
-        jQuery('.woof_checkbox_term, .woof_checkbox_instock, .woof_checkbox_sales').iCheck({
+        jQuery('.woof_checkbox_term').iCheck({
             checkboxClass: 'icheckbox_' + icheck_skin.skin + '-' + icheck_skin.color,
             //checkboxClass: 'icheckbox_square-green'
         });
@@ -40,7 +36,6 @@ function woof_checkbox_process_data(_this, is_checked) {
 function woof_checkbox_direct_search(name, tax, is_checked) {
 
     var values = '';
-
     if (is_checked) {
         if (tax in woof_current_values) {
             woof_current_values[tax] = woof_current_values[tax] + ',' + name;
@@ -71,5 +66,4 @@ function woof_checkbox_direct_search(name, tax, is_checked) {
         woof_submit_link(woof_get_submit_link());
     }
 }
-
 

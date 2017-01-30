@@ -2,6 +2,7 @@
 
 <?php
 $_REQUEST['additional_taxes'] = $additional_taxes;
+$_REQUEST['hide_terms_count_txt'] = isset($this->settings['hide_terms_count_txt']) ? $this->settings['hide_terms_count_txt'] : 0;
 
 if (!function_exists('woof_draw_radio_childs'))
 {
@@ -9,10 +10,11 @@ if (!function_exists('woof_draw_radio_childs'))
     function woof_draw_radio_childs($taxonomy_info, $tax_slug, $childs, $show_count, $show_count_dynamic, $hide_dynamic_empty_pos)
     {
         global $WOOF;
+        $request = $WOOF->get_request_data();
         $current_request = array();
-        if (isset($_GET[$tax_slug]))
+        if ($WOOF->is_isset_in_request_data($tax_slug))
         {
-            $current_request = $_GET[$tax_slug];
+            $current_request = $request[$tax_slug];
             $current_request = explode(',', urldecode($current_request));
         }
         //***
@@ -28,29 +30,39 @@ if (!function_exists('woof_draw_radio_childs'))
         {
             $hidden_terms = explode(',', $WOOF->settings['excluded_terms'][$tax_slug]);
         }
+        
+        $childs = apply_filters('woof_sort_terms_before_out', $childs, 'radio');
         ?>
         <ul class="woof_childs_list" <?php if ($hide_childs == 1): ?>style="display: none;"<?php endif; ?>>
             <?php foreach ($childs as $term) : $inique_id = uniqid(); ?>
                 <?php
                 $count_string = "";
                 $count = 0;
-                if ($show_count)
+                if (!in_array($term['slug'], $current_request))
                 {
-                    if ($show_count_dynamic)
+                    if ($show_count)
                     {
-                        $count = $WOOF->dynamic_count($term, 'radio', $_REQUEST['additional_taxes']);
-                    } else
-                    {
-                        $count = $term['count'];
+                        if ($show_count_dynamic)
+                        {
+                            $count = $WOOF->dynamic_count($term, 'radio', $_REQUEST['additional_taxes']);
+                        } else
+                        {
+                            $count = $term['count'];
+                        }
+                        $count_string = '<span>(' . $count . ')</span>';
                     }
-                    $count_string = '<span>(' . $count . ')</span>';
-                }
-                //+++
-                if ($hide_dynamic_empty_pos AND $count == 0)
-                {
-                    continue;
+
+                    //+++
+                    if ($hide_dynamic_empty_pos AND $count == 0)
+                    {
+                        continue;
+                    }
                 }
 
+                if ($_REQUEST['hide_terms_count_txt'])
+                {
+                    $count_string = "";
+                }
 
                 //excluding hidden terms
                 if (in_array($term['term_id'], $hidden_terms))
@@ -88,9 +100,10 @@ if (!function_exists('woof_draw_radio_childs'))
 <ul class="woof_list woof_list_radio">
     <?php
     $current_request = array();
-    if (isset($_GET[$tax_slug]))
+    $request = $this->get_request_data();
+    if ($this->is_isset_in_request_data($tax_slug))
     {
-        $current_request = $_GET[$tax_slug];
+        $current_request = $request[$tax_slug];
         $current_request = explode(',', urldecode($current_request));
     }
 
@@ -100,27 +113,38 @@ if (!function_exists('woof_draw_radio_childs'))
     {
         $hidden_terms = explode(',', $this->settings['excluded_terms'][$tax_slug]);
     }
+    
+    $terms = apply_filters('woof_sort_terms_before_out', $terms, 'radio');
     ?>
     <?php foreach ($terms as $term) : $inique_id = uniqid(); ?>
         <?php
         $count_string = "";
         $count = 0;
-        if ($show_count)
+        if (!in_array($term['slug'], $current_request))
         {
-            if ($show_count_dynamic)
+            if ($show_count)
             {
-                $count = $this->dynamic_count($term, 'radio', $_REQUEST['additional_taxes']);
-            } else
-            {
-                $count = $term['count'];
+                if ($show_count_dynamic)
+                {
+                    $count = $this->dynamic_count($term, 'radio', $_REQUEST['additional_taxes']);
+                } else
+                {
+                    $count = $term['count'];
+                }
+                $count_string = '<span>(' . $count . ')</span>';
             }
-            $count_string = '<span>(' . $count . ')</span>';
+            //+++
+            if ($hide_dynamic_empty_pos AND $count == 0)
+            {
+                continue;
+            }
         }
-        //+++
-        if ($hide_dynamic_empty_pos AND $count == 0)
+
+        if ($_REQUEST['hide_terms_count_txt'])
         {
-            continue;
+            $count_string = "";
         }
+
 
         //excluding hidden terms
         if (in_array($term['term_id'], $hidden_terms))

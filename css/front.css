@@ -21,6 +21,7 @@
     vertical-align: middle;
     padding-top: 3px;
     padding-bottom: 3px;
+    display: inline-block;
 }
 
 .woof_childs_list{
@@ -43,7 +44,7 @@
     padding-left: 5px;
 }
 
-.woo_submit_search_form_container{
+.woof_submit_search_form_container{
     overflow: hidden;
     clear: both;
     margin: 9px 0 15px 0;
@@ -91,10 +92,11 @@ ul.woof_list_color{
 
 }
 
-ul.woof_list_color li{
-    padding: 0 !important;
+ul.woof_list_color li {
+    display: inline-block !important;
+    float: none !important;
     margin: 3px 3px 0 0 !important;
-    float: left;
+    padding: 0 !important;
 }
 
 .woof_color_term {
@@ -133,14 +135,19 @@ p.woof_tooltip {
 }
 p.woof_tooltip span.woof_tooltip_data {
     position: absolute;
-    width:140px;
+    width:auto;
+    min-width: 140px;
+    max-width: 300px;
     color: #FFFFFF;
     background: #000000;
-    height: 30px;
-    line-height: 30px;
+    height: auto;
+    min-height: 19px;
+    line-height: normal;
+    vertical-align: middle;
     text-align: center;
     visibility: hidden;
     border-radius: 6px;
+    margin-top: -30px;
 }
 p.woof_tooltip span.woof_tooltip_data:after {
     /*
@@ -174,7 +181,7 @@ p:hover.woof_tooltip span.woof_tooltip_data {
 }
 
 .woof_title_search_container input[type='search']{
-    width: 95% !important;
+    width: 100% !important;
     padding: 5px !important;
     margin: 0 !important;
 }
@@ -183,13 +190,47 @@ p:hover.woof_tooltip span.woof_tooltip_data {
     display: block;
     width: 20px;
     height: 20px;
+    margin-left: 3px;
     background: url("../img/eye-icon2.png");
-    position: absolute;
-    left: 100%;
     /*margin: -25px 83%;*/
     display: none;
     border: none !important;
     text-decoration: none !important;
+    z-index: 999;
+    position: relative;
+}
+
+table.woof_title_table{
+    width: 100%;
+}
+
+.woof_sku_search_container.woof_container{
+    width: 100%;
+    margin-top: 5px;
+}
+
+.woof_sku_search_container .woof_sku_search_go{
+    display: block;
+    width: 20px;
+    height: 20px;
+    margin-left: 3px;
+    background: url("../img/eye-icon2.png");
+    /*margin: -25px 83%;*/
+    display: none;
+    border: none !important;
+    text-decoration: none !important;
+    z-index: 999;
+    position: relative;
+}
+
+.woof_sku_search_container input[type='search']{
+    width: 100% !important;
+    padding: 5px !important;
+    margin: 0 !important;
+}
+
+table.woof_sku_table{
+    width: 100%;
 }
 
 .woof_title_search_container .woof_container_inner{
@@ -199,7 +240,7 @@ p:hover.woof_tooltip span.woof_tooltip_data {
 
 @-moz-document url-prefix() {
     .woof_title_search_container .woof_title_search_go{
-        /*margin: -25px 95% !important;*/
+
     }
 }
 
@@ -211,7 +252,7 @@ p:hover.woof_tooltip span.woof_tooltip_data {
     margin: 5px 0 15px 0;
     display: none;
     position: relative;
-    z-index: 2015;
+    z-index: 99;
 }
 
 .woof_products_top_panel ul{
@@ -272,8 +313,8 @@ p:hover.woof_tooltip span.woof_tooltip_data {
     margin: 0 0 5px 0 !important;
 }
 
-.woof_sid_auto_shortcode #woof_show_title_search{
-    width: 99% !important;
+.woof_sid_auto_shortcode .woof_show_title_search{
+    width: 100% !important;
 }
 
 .woof_sid_auto_shortcode .woof_container_color{   
@@ -352,12 +393,12 @@ p:hover.woof_tooltip span.woof_tooltip_data {
     z-index: 999;
 }
 
-.woof_redraw_zone{
+.woof_auto_show .woof_redraw_zone{
     position: relative;
     z-index: 1001;
 }
 
-.woof_price_search_container{
+.woof_auto_show .woof_price_search_container{
     position: relative;
     z-index: 1002;
 }
@@ -564,6 +605,13 @@ p:hover.woof_tooltip span.woof_tooltip_data {
     display: none;
 }
 
+.woof_section_scrolled{
+    overflow: auto;
+    overflow-x: hidden;
+    margin-bottom: 3px;
+}
 
-
+.woof_price_filter_dropdown{
+    width: 100%;
+}
 

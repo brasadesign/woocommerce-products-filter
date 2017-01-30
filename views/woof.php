@@ -272,7 +272,7 @@
                             <?php
                             $woof_reset_btn_txt = __('Reset', 'woocommerce-products-filter');
                             if ( empty( $woof_link ) || ! $woof_link ) {
-                                $woof_link = get_permalink( woocommerce_get_page_id( 'shop' ) );
+                                $woof_link = apply_filters( 'woof_reset_btn_link', get_permalink( woocommerce_get_page_id( 'shop' ) ) );
                             }
                             ?>
                             <?php if ($woof_reset_btn_txt != 'none'): ?>
